@@ -1,8 +1,13 @@
 {
   "name": "imhere-angular-component-starter",
-  "version": "1.1.0",
+  "version": "1.0.0",
   "description": "A starter for Angular component made with Webpack",
+  "main": "dist/imhere-angular-component-starter.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
+    "prepublish": "npm run build",
     "build": "rimraf dist && webpack --bail --progress --profile",
     "server": "webpack-dev-server --history-api-fallback --inline --progress",
     "test": "karma start",
@@ -26,10 +31,15 @@
     "angular-mocks": "^1.5.0",
     "autoprefixer": "^6.0.3",
     "babel-core": "^6.2.1",
+    "babel-eslint": "^7.2.1",
     "babel-loader": "^6.2.0",
     "babel-preset-es2015": "^6.1.18",
     "copy-webpack-plugin": "4.0.1",
     "css-loader": "0.26.1",
+    "eslint": "^3.18.0",
+    "eslint-plugin-angular": "1.3.1",
+    "eslint-plugin-chai-expect": "^1.1.1",
+    "eslint-plugin-mocha": "^4.7.0",
     "extract-text-webpack-plugin": "2.0.0-beta.5",
     "file-loader": "^0.9.0",
     "html-webpack-plugin": "^2.7.1",
@@ -42,6 +52,7 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-spec-reporter": "0.0.26",
     "karma-webpack": "2.0.1",
+    "ng-annotate-webpack-plugin": "^0.2.1-pre",
     "node-libs-browser": "2.0.0",
     "null-loader": "^0.1.1",
     "phantomjs-prebuilt": "^2.1.4",

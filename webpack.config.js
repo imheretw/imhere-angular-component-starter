@@ -6,6 +6,7 @@ var autoprefixer = require('autoprefixer');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
+var ngAnnotatePlugin = require('ng-annotate-webpack-plugin');
 var path = require('path');
 
 /**
@@ -51,11 +52,11 @@ module.exports = function makeWebpackConfig() {
 
     // Filename for entry points
     // Only adds hash in build mode
-    filename: isProd ? '[name].[hash].js' : '[name].bundle.js',
+    filename: isProd ? '[name].js' : '[name].bundle.js',
 
     // Filename for non-entry points
     // Only adds hash in build mode
-    chunkFilename: isProd ? '[name].[hash].js' : '[name].bundle.js'
+    chunkFilename: isProd ? '[name].js' : '[name].bundle.js',
   };
 
   config.resolve = {
@@ -96,7 +97,7 @@ module.exports = function makeWebpackConfig() {
       // Compiles ES6 and ES7 into ES5 code
       test: /\.js$/,
       loader: 'babel-loader',
-      exclude: /node_modules/
+      exclude: /node_modules/,
     }, {
       // CSS LOADER
       // Reference: https://github.com/webpack/css-loader
@@ -115,9 +116,9 @@ module.exports = function makeWebpackConfig() {
         fallbackLoader: 'style-loader',
         loader: [
           {loader: 'css-loader', query: {sourceMap: true}},
-          {loader: 'postcss-loader'}
+          {loader: 'postcss-loader'},
         ],
-      })
+      }),
     }, {
       // ASSET LOADER
       // Reference: https://github.com/webpack/file-loader
@@ -126,14 +127,14 @@ module.exports = function makeWebpackConfig() {
       // Pass along the updated reference to your code
       // You can add here any file extension you want to get copied to your output
       test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/,
-      loader: 'file-loader'
+      loader: 'file-loader',
     }, {
       // HTML LOADER
       // Reference: https://github.com/webpack/raw-loader
       // Allow loading html through js
       test: /\.html$/,
-      loader: 'raw-loader'
-    }]
+      loader: 'raw-loader',
+    }],
   };
 
   // ISTANBUL LOADER
@@ -146,13 +147,13 @@ module.exports = function makeWebpackConfig() {
       test: /\.js$/,
       exclude: [
         /node_modules/,
-        /\.spec\.js$/
+        /\.spec\.js$/,
       ],
       loader: 'istanbul-instrumenter-loader',
       query: {
-        esModules: true
-      }
-    })
+        esModules: true,
+      },
+    });
   }
 
   /**
@@ -173,10 +174,14 @@ module.exports = function makeWebpackConfig() {
       test: /\.scss$/i,
       options: {
         postcss: {
-          plugins: [autoprefixer]
-        }
-      }
-    })
+          plugins: [autoprefixer],
+        },
+      },
+    }),
+    new ngAnnotatePlugin({
+        add: true,
+        // other ng-annotate options here
+    }),
   ];
 
   // Skip rendering index.html in test mode
@@ -186,14 +191,14 @@ module.exports = function makeWebpackConfig() {
     config.plugins.push(
       new HtmlWebpackPlugin({
         template: './examples/default/index.html',
-        inject: 'body'
+        inject: 'body',
       }),
 
       // Reference: https://github.com/webpack/extract-text-webpack-plugin
       // Extract css files
       // Disabled when in test mode or not in build mode
       new ExtractTextPlugin({filename: 'css/[name].css', disable: !isProd, allChunks: true})
-    )
+    );
   }
 
   // Add build specific plugins
@@ -214,9 +219,9 @@ module.exports = function makeWebpackConfig() {
       // Copy assets from the public folder
       // Reference: https://github.com/kevlened/copy-webpack-plugin
       new CopyWebpackPlugin([{
-        from: __dirname + '/examples/default'
-      }])
-    )
+        from: __dirname + '/examples/default',
+      }]),
+    );
   }
 
   /**
@@ -226,7 +231,7 @@ module.exports = function makeWebpackConfig() {
    */
   config.devServer = {
     contentBase: './examples/default',
-    stats: 'minimal'
+    stats: 'minimal',
   };
 
   return config;
