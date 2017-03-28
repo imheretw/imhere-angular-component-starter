@@ -1,5 +1,5 @@
 {
-  "extends": ["eslint:recommended", "plugin:mocha/recommended"],
+  "extends": ["eslint:recommended", "plugin:mocha/recommended", "airbnb"],
   "env": {
     "browser": true,
     "es6": true,
@@ -25,6 +25,7 @@
       "vars": "all",
       "args": "none"
     }],
+    "global-require": "off",
     "no-use-before-define": "off",
     "no-useless-constructor": 2,
     "semi": [2, "always"],
